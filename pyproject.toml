@@ -14,7 +14,7 @@ pymavlink = "^2.4.40"
 mavproxy = "^1.8.66"
 
 [tool.poetry.scripts]
-run-lua = "drone_utils.run_lua_script:app"
+ap-lua = "drone_utils.run_lua_script:app"
 
 [build-system]
 requires = ["poetry-core"]
