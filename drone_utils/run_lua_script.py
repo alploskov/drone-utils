@@ -1,15 +1,22 @@
 from pathlib import Path
+from typing import Optional
 import typer
 from typer import Option
 from pymavlink import mavutil
 from .mavftp import FTP
 
+
 app = typer.Typer()
 
 @app.command()
-def main(addr: str = Option(default='/dev/ttyACM0'),
-         script: str = Option(default=''),
+def main(addr: Optional[str] = Option(default=None),
+         script: Optional[str] = Option(default=''),
          is_sitl: bool = Option(False, '--sitl/--no-sitl')):
+    if not addr:
+        if is_sitl:
+            addr = 'udp:127.0.0.1:14550'
+        else:
+            addr = '/dev/ttyACM0'
     conn = mavutil.mavlink_connection(addr)
     conn.wait_heartbeat()
     print("Heartbeat from APM (system %u component %u)" % (conn.target_system, conn.target_system))
